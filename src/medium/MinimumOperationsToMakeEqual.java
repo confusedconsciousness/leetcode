@@ -53,14 +53,18 @@ public class MinimumOperationsToMakeEqual {
 
             // check if we have covered one depth, if yes increase the operation by 1
             if (node == null) {
-                operations += 1;
-
                 // this means no other elements are left, so we should terminate the process
                 if (queue.isEmpty()) {
                     return operations;
                 }
+                operations += 1;
                 queue.add(null);
                 continue;
+            }
+
+            // base case
+            if (node.getX() == node.getY()) {
+                return operations;
             }
 
             // if the node is already visited no need to put it in the queue again
@@ -69,33 +73,23 @@ public class MinimumOperationsToMakeEqual {
             }
             visited.add(getSignature(node));
 
-            // base case
-            if (node.getX() == node.getY()) {
-                return operations;
-            }
-
             // otherwise we'll have to create four different node based on our four different operations
-            Node child;
             if (node.getX() % 11 == 0) {
-                child = new Node(node.getX() / 11, y);
-                queue.add(child);
+                queue.add(new Node(node.getX() / 11, node.getY()));
             }
 
             if (node.getX() % 5 == 0) {
-                child = new Node(node.getX() / 5, y);
-                queue.add(child);
+                queue.add(new Node(node.getX() / 5, node.getY()));
             }
 
-            if (node.getX() < 9999) {
+            if (node.getX() < 10_000) {
                 // otherwise we would create a node (10_0001, y) which is not inside the bounds
-                child = new Node(node.getX() + 1, y);
-                queue.add(child);
+                queue.add(new Node(node.getX() + 1, node.getY()));
             }
 
             if (node.getX() > 1) {
                 // otherwise we would create a node (0, y) which is not inside the bounds
-                child = new Node(node.getX() - 1, y);
-                queue.add(child);
+                queue.add(new Node(node.getX() - 1, node.getY()));
             }
         }
 
@@ -108,6 +102,6 @@ public class MinimumOperationsToMakeEqual {
 
     public static void main(String[] args) {
         MinimumOperationsToMakeEqual test = new MinimumOperationsToMakeEqual();
-        System.out.println(test.minimumOperationsToMakeEqual(25, 30));
+        System.out.println(test.minimumOperationsToMakeEqual(1, 10000));
     }
 }
