@@ -18,21 +18,8 @@ import java.util.Set;
  */
 public class MinimumOperationsToMakeEqual {
     Set<String> visited = new HashSet<>(); // this will prevent us from running indefinitely
-    static class Node {
-        private int x;
-        private int y;
 
-        Node(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getX() {
-            return x;
-        }
-        public int getY() {
-            return y;
-        }
+    record Node(int x, int y) {
     }
 
     public int minimumOperationsToMakeEqual(int x, int y) {
@@ -63,7 +50,7 @@ public class MinimumOperationsToMakeEqual {
             }
 
             // base case
-            if (node.getX() == node.getY()) {
+            if (node.x() == node.y()) {
                 return operations;
             }
 
@@ -74,22 +61,22 @@ public class MinimumOperationsToMakeEqual {
             visited.add(getSignature(node));
 
             // otherwise we'll have to create four different node based on our four different operations
-            if (node.getX() % 11 == 0) {
-                queue.add(new Node(node.getX() / 11, node.getY()));
+            if (node.x() % 11 == 0) {
+                queue.add(new Node(node.x() / 11, node.y()));
             }
 
-            if (node.getX() % 5 == 0) {
-                queue.add(new Node(node.getX() / 5, node.getY()));
+            if (node.x() % 5 == 0) {
+                queue.add(new Node(node.x() / 5, node.y()));
             }
 
-            if (node.getX() < 10_000) {
+            if (node.x() < 10_000) {
                 // otherwise we would create a node (10_0001, y) which is not inside the bounds
-                queue.add(new Node(node.getX() + 1, node.getY()));
+                queue.add(new Node(node.x() + 1, node.y()));
             }
 
-            if (node.getX() > 1) {
+            if (node.x() > 1) {
                 // otherwise we would create a node (0, y) which is not inside the bounds
-                queue.add(new Node(node.getX() - 1, node.getY()));
+                queue.add(new Node(node.x() - 1, node.y()));
             }
         }
 
@@ -97,7 +84,7 @@ public class MinimumOperationsToMakeEqual {
     }
 
     private String getSignature(Node node) {
-        return node.getX() + ":" + node.getY();
+        return node.x() + ":" + node.y();
     }
 
     public static void main(String[] args) {
